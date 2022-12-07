@@ -12,9 +12,9 @@ import (
 )
 
 var streamsMap = map[string][]string{
-	"1-slack": []string{"1.slack.eu"},
-	"2-slack": []string{"2.slack.eu", "2.slack.us"},
-	"3-slack": []string{"3.slack.eu"},
+	"1-slack": {"1.slack.eu"},
+	"2-slack": {"2.slack.eu", "2.slack.us"},
+	"3-slack": {"3.slack.eu"},
 }
 
 func main() {
