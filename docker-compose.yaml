@@ -1,0 +1,32 @@
+version: "3.5"
+services:
+  n0:
+    image: nats
+    ports:
+      - "4222:4222"
+      - "8222:8222"
+    command: --name N0 --cluster_name JSC --cluster nats://0.0.0.0:6222 --routes nats://n0:6222,nats://n1:6222,nats://n2:6222 -p 4222 --http_port 8222 -c jetstream.config
+    networks: ["nats"]
+    volumes:
+      - ./jetstream.config:/jetstream.config
+      - ./persistent-data/server-n0/:/data/jetstream
+  n1:
+    image: nats
+    command: --name N1 --cluster_name JSC --cluster nats://0.0.0.0:6222 --routes nats://n0:6222,nats://n1:6222,nats://n2:6222 -p 4222 -c jetstream.config
+    networks: ["nats"]
+    depends_on: ["n0"]
+    volumes:
+      - ./jetstream.config:/jetstream.config
+      - ./persistent-data/server-n1/:/data/jetstream
+  n2:
+    image: nats
+    command: --name N2 --cluster_name JSC --cluster nats://0.0.0.0:6222 --routes nats://n0:6222,nats://n1:6222,nats://n2:6222 -p 4222 -c jetstream.config
+    networks: ["nats"]
+    depends_on: ["n0"]
+    volumes:
+      - ./jetstream.config:/jetstream.config
+      - ./persistent-data/server-n2/:/data/jetstream
+
+networks:
+  nats:
+    name: nats
